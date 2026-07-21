@@ -784,7 +784,7 @@ const handlePanchayatChange = (e) => {
             <textarea
               rows="4"
               name="Doc"
-              value={formData.healthcareProblems}
+              value={formData.Doc}
               onChange={handleChange}
               placeholder="answer..."
             ></textarea>
@@ -797,7 +797,7 @@ const handlePanchayatChange = (e) => {
             <textarea
               rows="4"
               name="Feedback"
-              value={formData.healthcareProblems}
+              value={formData.Feedback}
               onChange={handleChange}
               placeholder="Feedback..."
             ></textarea>
