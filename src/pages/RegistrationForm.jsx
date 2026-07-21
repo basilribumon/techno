@@ -16,7 +16,6 @@ import { saveSurvey } from "../services/surveyService";
 import "../styles/RegistrationForm.css";
 
 export default function RegistrationForm() {
-
   const [formData, setFormData] = useState({
     fatherName: "",
     address: "",
@@ -60,7 +59,6 @@ export default function RegistrationForm() {
   });
 
   const handleChange = (e) => {
-
     const { name, value, type, checked } = e.target;
 
     setFormData((prev) => ({
@@ -73,74 +71,41 @@ export default function RegistrationForm() {
     e.preventDefault();
 
     try {
-
       await saveSurvey(formData);
 
       alert("Survey Saved Successfully");
 
       console.log(formData);
-
     } catch (error) {
-
       console.error(error);
 
       alert("Error Saving Survey");
-
     }
   };
 
   return (
-
     <div className="container">
-
       <form onSubmit={handleSubmit}>
-
         <Header />
 
-        <PersonalDetails
-          formData={formData}
-          handleChange={handleChange}
-        />
+        <PersonalDetails formData={formData} handleChange={handleChange} />
 
-        <HouseDetails
-          formData={formData}
-          handleChange={handleChange}
-        />
+        <HouseDetails formData={formData} handleChange={handleChange} />
 
-        <FamilyMembers
-          formData={formData}
-          handleChange={handleChange}
-        />
+        <FamilyMembers formData={formData} handleChange={handleChange} />
 
-        <PermanentPatients
-          formData={formData}
-          handleChange={handleChange}
-        />
+        <PermanentPatients formData={formData} handleChange={handleChange} />
 
-        <PalliativeCare
-          formData={formData}
-          handleChange={handleChange}
-        />
+        <PalliativeCare formData={formData} handleChange={handleChange} />
 
-        <DiseaseReason
-          formData={formData}
-          handleChange={handleChange}
-        />
+        <DiseaseReason formData={formData} handleChange={handleChange} />
 
-        <Remarks
-          formData={formData}
-          handleChange={handleChange}
-        />
+        <Remarks formData={formData} handleChange={handleChange} />
 
-        <SurveyQuestions
-          formData={formData}
-          handleChange={handleChange}
-        />
+        <SurveyQuestions formData={formData} handleChange={handleChange} />
 
         <SubmitButton />
-
       </form>
-
     </div>
   );
 }
