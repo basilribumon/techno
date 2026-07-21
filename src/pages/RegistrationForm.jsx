@@ -1,13 +1,17 @@
 import { useState } from "react";
 import { saveSurvey } from "../services/surveyService";
+import { useEffect } from "react";
+import { getPanchayats } from "../services/surveyService";
 
 import "../styles/RegistrationForm.css";
 
 export default function RegistrationForm() {
+  
   const [formData, setFormData] = useState({
     // Personal Details
     fatherName: "",
     address: "",
+   panchayat: "",
     ward: "",
     phone: "",
 
@@ -60,6 +64,8 @@ export default function RegistrationForm() {
     monthlyExpense: "",
     knowPalliative: "",
     medicalAid: "",
+    Doc: "",
+    Feedback:"",
     supportPalliative: "",
 
     supportFinancial: false,
@@ -67,7 +73,44 @@ export default function RegistrationForm() {
     supportOthers: false,
     donateBlood: "",
     bloodGroup: "",
+    Surveyername:"",
+    Surphone:"",
+    
   });
+  const [panchayats, setPanchayats] = useState([]);
+const [wards, setWards] = useState([]);
+
+useEffect(() => {
+  fetchPanchayats();
+}, []);
+
+const fetchPanchayats = async () => {
+  try {
+    const data = await getPanchayats();
+    setPanchayats(data);
+  } catch (error) {
+    console.error(error);
+  }
+};
+const handlePanchayatChange = (e) => {
+  const selectedPanchayat = e.target.value;
+
+  const selected = panchayats.find(
+    (item) => item.name === selectedPanchayat
+  );
+
+  setFormData((prev) => ({
+    ...prev,
+    panchayat: selectedPanchayat,
+    ward: "",
+  }));
+
+  if (selected) {
+    setWards(selected.wards);
+  } else {
+    setWards([]);
+  }
+};
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -105,6 +148,7 @@ export default function RegistrationForm() {
 
         <div className="box">
           <div className="row">
+            <h3>Personal details</h3>
             <label>Guardian's Name</label>
             <input
               type="text"
@@ -126,29 +170,55 @@ export default function RegistrationForm() {
             ></textarea>
           </div>
 
-          <div className="two-column">
-            <div>
-              <label>Ward</label>
-              <input
-                type="text"
-                name="ward"
-                value={formData.ward}
-                onChange={handleChange}
-                required
-              />
-            </div>
+<div className="two-column">
+  <div>
+    <label>Panchayat</label>
+    <select
+      name="panchayat"
+      value={formData.panchayat}
+      onChange={handlePanchayatChange}
+      required
+    >
+      <option value="">Select Panchayat</option>
 
-            <div>
-              <label>Phone Number</label>
-              <input
-                type="text"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </div>
+      {panchayats.map((item) => (
+        <option key={item.id} value={item.name}>
+          {item.name}
+        </option>
+      ))}
+    </select>
+  </div>
+
+  <div>
+    <label>Ward</label>
+    <select
+      name="ward"
+      value={formData.ward}
+      onChange={handleChange}
+      required
+      disabled={!wards.length}
+    >
+      <option value="">Select Ward</option>
+
+      {wards.map((ward) => (
+        <option key={ward} value={ward}>
+          {ward}
+        </option>
+      ))}
+    </select>
+  </div>
+
+  <div>
+    <label>Phone Number</label>
+    <input
+      type="number"
+      name="phone"
+      value={formData.phone}
+      onChange={handleChange}
+      required
+    />
+  </div>
+</div>
         </div>
 
         <div className="box">
@@ -655,54 +725,104 @@ export default function RegistrationForm() {
           )}
           <hr />
 
-<h3>13. Are you willing to Donate Blood?</h3>
+          <h3>13. Are you willing to Donate Blood?</h3>
 
-<div className="yesno">
-  <label>
-    <input
-      type="radio"
-      name="donateBlood"
-      value="Yes"
-      checked={formData.donateBlood === "Yes"}
-      onChange={handleChange}
-    />
-    Yes
-  </label>
+          <div className="yesno">
+            <label>
+              <input
+                type="radio"
+                name="donateBlood"
+                value="Yes"
+                checked={formData.donateBlood === "Yes"}
+                onChange={handleChange}
+              />
+              Yes
+            </label>
 
-  <label>
-    <input
-      type="radio"
-      name="donateBlood"
-      value="No"
-      checked={formData.donateBlood === "No"}
-      onChange={handleChange}
-    />
-    No
-  </label>
+            <label>
+              <input
+                type="radio"
+                name="donateBlood"
+                value="No"
+                checked={formData.donateBlood === "No"}
+                onChange={handleChange}
+              />
+              No
+            </label>
 
-  {formData.donateBlood === "Yes" && (
-    <label className="blood-group">
-      Blood Group
-      <select
-        name="bloodGroup"
-        value={formData.bloodGroup}
-        onChange={handleChange}
-      >
-        <option value="">Select</option>
-        <option value="A+">A+</option>
-        <option value="A-">A-</option>
-        <option value="B+">B+</option>
-        <option value="B-">B-</option>
-        <option value="AB+">AB+</option>
-        <option value="AB-">AB-</option>
-        <option value="O+">O+</option>
-        <option value="O-">O-</option>
-      </select>
-    </label>
-  )}
-</div>
+            {formData.donateBlood === "Yes" && (
+              <label className="blood-group">
+                Blood Group
+                <select
+                  name="bloodGroup"
+                  value={formData.bloodGroup}
+                  onChange={handleChange}
+                >
+                  <option value="">Select</option>
+                  <option value="A+">A+</option>
+                  <option value="A-">A-</option>
+                  <option value="B+">B+</option>
+                  <option value="B-">B-</option>
+                  <option value="AB+">AB+</option>
+                  <option value="AB-">AB-</option>
+                  <option value="O+">O+</option>
+                  <option value="O-">O-</option>
+                </select>
+              </label>
+            )}
+          </div>
+         
         </div>
+ <div className="box">
+            <h3>
+              14. Is there anyone in your household, neighborhood, or among your
+              relatives within the limits of Cheriyamungal Panchayat who is
+              working as a doctor or nurse, or currently studying a medical or
+              nursing course?
+            </h3>
 
+            <textarea
+              rows="4"
+              name="Doc"
+              value={formData.healthcareProblems}
+              onChange={handleChange}
+              placeholder="answer..."
+            ></textarea>
+          </div>
+           <div className="box">
+            <h3>
+              Please share your opinions and suggestions about grace :
+            </h3>
+
+            <textarea
+              rows="4"
+              name="Feedback"
+              value={formData.healthcareProblems}
+              onChange={handleChange}
+              placeholder="Feedback..."
+            ></textarea>
+          </div>
+           <div className="row">
+            
+            <label>Surveyer Name</label>
+            <input
+              type="text"
+              name="Surveyername"
+              value={formData.Surveyername}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div>
+              <label>Phone Number</label>
+              <input
+                type="number"
+                name="Surphone"
+                value={formData.Surphone}
+                onChange={handleChange}
+                required
+              />
+            </div>
         <div className="submit-box">
           <button type="submit" className="btn">
             Submit Form

@@ -109,6 +109,24 @@ hr{
     margin-bottom:8px;
     font-weight:600;
 }
+.two-column select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  font-size: 16px;
+  font-family: inherit;
+  background: #fff;
+  outline: none;
+  transition: 0.3s;
+  height: 46px;
+  cursor: pointer;
+}
+
+.two-column select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
 
 /* Family Grid */
 
