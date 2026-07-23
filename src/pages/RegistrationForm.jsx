@@ -6,12 +6,11 @@ import { getPanchayats } from "../services/surveyService";
 import "../styles/RegistrationForm.css";
 
 export default function RegistrationForm() {
-  
   const [formData, setFormData] = useState({
     // Personal Details
     fatherName: "",
     address: "",
-   panchayat: "",
+    panchayat: "",
     ward: "",
     phone: "",
 
@@ -65,7 +64,7 @@ export default function RegistrationForm() {
     knowPalliative: "",
     medicalAid: "",
     Doc: "",
-    Feedback:"",
+    Feedback: "",
     supportPalliative: "",
 
     supportFinancial: false,
@@ -73,44 +72,41 @@ export default function RegistrationForm() {
     supportOthers: false,
     donateBlood: "",
     bloodGroup: "",
-    Surveyername:"",
-    Surphone:"",
-    
+    Surveyername: "",
+    Surphone: "",
   });
   const [panchayats, setPanchayats] = useState([]);
-const [wards, setWards] = useState([]);
+  const [wards, setWards] = useState([]);
 
-useEffect(() => {
-  fetchPanchayats();
-}, []);
+  useEffect(() => {
+    fetchPanchayats();
+  }, []);
 
-const fetchPanchayats = async () => {
-  try {
-    const data = await getPanchayats();
-    setPanchayats(data);
-  } catch (error) {
-    console.error(error);
-  }
-};
-const handlePanchayatChange = (e) => {
-  const selectedPanchayat = e.target.value;
+  const fetchPanchayats = async () => {
+    try {
+      const data = await getPanchayats();
+      setPanchayats(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const handlePanchayatChange = (e) => {
+    const selectedPanchayat = e.target.value;
 
-  const selected = panchayats.find(
-    (item) => item.name === selectedPanchayat
-  );
+    const selected = panchayats.find((item) => item.name === selectedPanchayat);
 
-  setFormData((prev) => ({
-    ...prev,
-    panchayat: selectedPanchayat,
-    ward: "",
-  }));
+    setFormData((prev) => ({
+      ...prev,
+      panchayat: selectedPanchayat,
+      ward: "",
+    }));
 
-  if (selected) {
-    setWards(selected.wards);
-  } else {
-    setWards([]);
-  }
-};
+    if (selected) {
+      setWards(selected.wards);
+    } else {
+      setWards([]);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -170,55 +166,55 @@ const handlePanchayatChange = (e) => {
             ></textarea>
           </div>
 
-<div className="two-column">
-  <div>
-    <label>Panchayat</label>
-    <select
-      name="panchayat"
-      value={formData.panchayat}
-      onChange={handlePanchayatChange}
-      required
-    >
-      <option value="">Select Panchayat</option>
+          <div className="two-column">
+            <div>
+              <label>Panchayat</label>
+              <select
+                name="panchayat"
+                value={formData.panchayat}
+                onChange={handlePanchayatChange}
+                required
+              >
+                <option value="">Select Panchayat</option>
 
-      {panchayats.map((item) => (
-        <option key={item.id} value={item.name}>
-          {item.name}
-        </option>
-      ))}
-    </select>
-  </div>
+                {panchayats.map((item) => (
+                  <option key={item.id} value={item.name}>
+                    {item.name}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-  <div>
-    <label>Ward</label>
-    <select
-      name="ward"
-      value={formData.ward}
-      onChange={handleChange}
-      required
-      disabled={!wards.length}
-    >
-      <option value="">Select Ward</option>
+            <div>
+              <label>Ward</label>
+              <select
+                name="ward"
+                value={formData.ward}
+                onChange={handleChange}
+                required
+                disabled={!wards.length}
+              >
+                <option value="">Select Ward</option>
 
-      {wards.map((ward) => (
-        <option key={ward} value={ward}>
-          {ward}
-        </option>
-      ))}
-    </select>
-  </div>
+                {wards.map((ward) => (
+                  <option key={ward} value={ward}>
+                    {ward}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-  <div>
-    <label>Phone Number</label>
-    <input
-      type="number"
-      name="phone"
-      value={formData.phone}
-      onChange={handleChange}
-      required
-    />
-  </div>
-</div>
+            <div>
+              <label>Phone Number</label>
+              <input
+                type="number"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
         </div>
 
         <div className="box">
@@ -771,58 +767,54 @@ const handlePanchayatChange = (e) => {
               </label>
             )}
           </div>
-         
         </div>
- <div className="box">
-            <h3>
-              14. Is there anyone in your household, neighborhood, or among your
-              relatives within the limits of Cheriyamungal Panchayat who is
-              working as a doctor or nurse, or currently studying a medical or
-              nursing course?
-            </h3>
+        <div className="box">
+          <h3>
+            14. Is there anyone in your household, neighborhood, or among your
+            relatives within the limits of Cheriyamungal Panchayat who is
+            working as a doctor or nurse, or currently studying a medical or
+            nursing course?
+          </h3>
 
-            <textarea
-              rows="4"
-              name="Doc"
-              value={formData.Doc}
-              onChange={handleChange}
-              placeholder="answer..."
-            ></textarea>
-          </div>
-           <div className="box">
-            <h3>
-              Please share your opinions and suggestions about grace :
-            </h3>
+          <textarea
+            rows="4"
+            name="Doc"
+            value={formData.Doc}
+            onChange={handleChange}
+            placeholder="answer..."
+          ></textarea>
+        </div>
+        <div className="box">
+          <h3>Please share your opinions and suggestions about grace :</h3>
 
-            <textarea
-              rows="4"
-              name="Feedback"
-              value={formData.Feedback}
-              onChange={handleChange}
-              placeholder="Feedback..."
-            ></textarea>
-          </div>
-           <div className="row">
-            
-            <label>Surveyer Name</label>
-            <input
-              type="text"
-              name="Surveyername"
-              value={formData.Surveyername}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div>
-              <label>Phone Number</label>
-              <input
-                type="number"
-                name="Surphone"
-                value={formData.Surphone}
-                onChange={handleChange}
-                required
-              />
-            </div>
+          <textarea
+            rows="4"
+            name="Feedback"
+            value={formData.Feedback}
+            onChange={handleChange}
+            placeholder="Feedback..."
+          ></textarea>
+        </div>
+        <div className="row">
+          <label>Surveyer Name</label>
+          <input
+            type="text"
+            name="Surveyername"
+            value={formData.Surveyername}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label>Phone Number</label>
+          <input
+            type="number"
+            name="Surphone"
+            value={formData.Surphone}
+            onChange={handleChange}
+            required
+          />
+        </div>
         <div className="submit-box">
           <button type="submit" className="btn">
             Submit Form
